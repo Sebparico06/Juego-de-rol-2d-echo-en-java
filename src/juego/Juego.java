@@ -13,6 +13,8 @@ public class Juego extends Canvas implements Runnable {
 	private static final int ANCHO = 800;
 	private static final int ALTO = 600;
 
+	private static volatile boolean enFuncionamiento = false;
+
 	private static final String NOMBRE = "Juego";
 
 	private static JFrame ventana;
@@ -34,18 +36,29 @@ public class Juego extends Canvas implements Runnable {
 	public static void main(String[] args) {
 		Juego juego = new Juego();
 		juego.iniciar();
+
 	}
 
 	private void iniciar() {
+		enFuncionamiento = true;
+
 		thread = new Thread(this, "Graficos");
 		thread.start();
 	}
 
 	private void detener() {
+		enFuncionamiento = false;
 
+		try {
+			thread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void run() {
-		System.out.println("El Thread 2 se esta ejecutando con exito");
+		while (enFuncionamiento) {
+
+		}
 	}
 }
